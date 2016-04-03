@@ -1,19 +1,29 @@
 
-ns go-shadow.updater.core
+ns go-shadow.updater.core $ :require
+  [] go-shadow.updater.analyse :refer $ [] analyse-shadow
 
 defn use-pick (store op-data)
   let
     (position $ first op-data)
       black? $ get op-data 1
-    assoc store position $ {} (:picked? true)
-      :value $ if black? 0 1
+    -> store
+      assoc-in ([] :board position)
+        {} (:picked? true)
+          :value $ if black? 0 1
+
+      update :white? not
 
 defn use-retract (store position)
-  assoc store position $ {} (:picked false)
-    :value 0
+  -> store $ assoc-in ([] :board position)
+    {} (:picked false)
+      :value 0
+
+defn use-switch (store op-data)
+  update store :white? not
 
 defn updater (old-store op op-data)
-  case op
+  analyse-shadow $ case op
     :pick $ use-pick old-store op-data
     :retract $ use-retract old-store op-data
+    :switch $ use-switch old-store op-data
     , old-store

@@ -19,4 +19,5 @@ def container-component $ {} (:name :container)
     fn (state)
       [] :div
         {} $ :style style-container
-        [] board-component store
+        [] board-component (:board store)
+          :white? store

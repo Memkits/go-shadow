@@ -12,13 +12,16 @@ ns go-shadow.core $ :require
   [] go-shadow.config :as config
   [] go-shadow.updater.core :refer $ [] updater
 
-defonce global-store $ atom (make-board config/size)
+defonce global-store $ atom
+  {} (:white? false)
+    :board $ make-board config/size
 
 defonce global-states $ atom ({})
 
 defonce global-element $ atom nil
 
 defn render-element ()
+  .info js/console |rendering: @global-store @global-states
   render-app ([] container-component @global-store)
     , @global-states
 

@@ -26,6 +26,11 @@ defn style-cell (position stage)
     :cursor $ if (:picked? stage)
       , |default |pointer
 
+defn handle-click (position picked? black?)
+  fn (simple-event dispatch mutate)
+    if picked? (dispatch :retract position)
+      dispatch :pick $ [] position black?
+
 def cell-component $ {} (:name :cell)
   :update-state merge
   :get-state $ fn (position stage black?)
@@ -33,8 +38,11 @@ def cell-component $ {} (:name :cell)
   :render $ fn (position stage black?)
     fn (state)
       [] :div
-        {} $ :style (style-cell position stage)
-        if (:picked? stage)
-          [] stone-component position $ :value stage
-          [] shadow-component position (:value stage)
+        {}
+          :style $ style-cell position stage
+          :on-click $ handle-click position (:picked? stage)
             , black?
+
+        if (:picked? stage)
+          [] stone-component $ :value stage
+          [] shadow-component $ :value stage

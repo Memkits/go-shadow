@@ -24,21 +24,25 @@ defn style-picker (black?)
     :border-radius |50%
     :box-shadow $ str "|0px 0px 4px "
       hsl 0 0 0 0.3
+    :cursor |pointer
+
+defn handle-switch (simple-event dispatch mutate)
+  dispatch :switch
 
 def board-component $ {} (:name :board)
   :update-state merge
   :get-state $ fn (size)
     {}
-  :render $ fn (board)
+  :render $ fn (board white?)
     fn (state)
       let
-        (black? $ ->> board (filter $ fn (entry) (:picked? $ val entry)) (count) (even?))
-
+        (black? $ not white?)
         [] :div ({})
           [] :div
             {} $ :style style-header
             [] :div $ {}
               :style $ style-picker black?
+              :on-click handle-switch
 
           [] :div
             {} $ :style style-board

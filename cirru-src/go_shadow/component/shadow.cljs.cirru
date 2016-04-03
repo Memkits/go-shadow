@@ -11,23 +11,18 @@ defn style-shadow (value)
     :align-items |center
     :width |32px
     :height |32px
+    :pointer-events |none
 
 def style-text $ {} (:pointer-events |none)
 
-defn handle-click (position black?)
-  fn (simple-event dispatch mutate)
-    dispatch :pick $ [] position black?
-
 def shadow-component $ {} (:name :shadow)
   :update-state merge
-  :get-state $ fn (position value black?)
+  :get-state $ fn (value)
     {}
-  :render $ fn (position value black?)
+  :render $ fn (value)
     fn (state)
       [] :div
-        {}
-          :style $ style-shadow value
-          :on-click $ handle-click position black?
+        {} $ :style (style-shadow value)
         [] :span $ {}
           :inner-text $ str value
           :style style-text

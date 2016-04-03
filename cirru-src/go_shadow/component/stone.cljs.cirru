@@ -10,17 +10,13 @@ defn style-stone (kind)
     :width |64px
     :height |64px
     :border-radius |50px
-
-defn handle-click (position)
-  fn (simple-event dispatch mutate)
-    dispatch :retract position
+    :pointer-events |none
 
 def stone-component $ {} (:name :stone)
   :update-state merge
-  :get-state $ fn (position kind)
+  :get-state $ fn (kind)
     {}
-  :render $ fn (position kind)
+  :render $ fn (kind)
     fn (state)
       [] :div $ {}
         :style $ style-stone kind
-        :on-click $ handle-click position
