@@ -22,8 +22,10 @@ defn use-switch (store op-data)
   update store :white? not
 
 defn updater (old-store op op-data)
-  analyse-shadow $ case op
-    :pick $ use-pick old-store op-data
-    :retract $ use-retract old-store op-data
-    :switch $ use-switch old-store op-data
-    , old-store
+  update
+    case op
+      :pick $ use-pick old-store op-data
+      :retract $ use-retract old-store op-data
+      :switch $ use-switch old-store op-data
+      , old-store
+    , :board analyse-shadow

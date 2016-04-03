@@ -65,7 +65,7 @@
 (deftask build-simple []
   (comp
     (compile-cirru)
-    (cljs)
+    (cljs :optimizations :simple)
     (html-entry :dsl (html-dsl {:env :build}) :html-name "index.html")
     (target)))
 
@@ -84,7 +84,7 @@
 
 (deftask send-tiye []
   (comp
-    (build-simple)
+    (build-advanced)
     (rsync)))
 
 (deftask build []

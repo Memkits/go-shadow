@@ -14,6 +14,8 @@ def style-board $ {}
   :background-color $ hsl 44 50 60
 
 def style-header $ {} (:height |40px)
+  :display |flex
+  :justify-content |space-around
 
 defn style-picker (black?)
   {} (:width |32px)
@@ -37,12 +39,36 @@ def board-component $ {} (:name :board)
     fn (state)
       let
         (black? $ not white?)
+          black-stones $ ->> board
+            filter $ fn (entry)
+              let
+                (stage $ val entry)
+                and (:picked? stage)
+                  = (:value stage)
+                    , 0
+
+            count
+
+          white-stones $ ->> board
+            filter $ fn (entry)
+              let
+                (stage $ val entry)
+                and (:picked? stage)
+                  = (:value stage)
+                    , 1
+
+            count
+
         [] :div ({})
           [] :div
             {} $ :style style-header
             [] :div $ {}
               :style $ style-picker black?
               :on-click handle-switch
+            [] :span $ {}
+              :inner-text $ str |Black: black-stones
+            [] :span $ {}
+              :inner-text $ str |White: white-stones
 
           [] :div
             {} $ :style style-board
